@@ -1,6 +1,6 @@
-https://github.com/socialvibe/gametwo
+https://github.com/colejona/gamethree
 
-[PLAY](https://true-gametwo.herokuapp.com/)
+[PLAY](https://gamethree.herokuapp.com/)
 
 This game was made with: https://github.com/photonstorm/phaser
 
