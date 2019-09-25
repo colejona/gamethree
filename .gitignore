@@ -24,5 +24,5 @@ test/fixtures/**/.fbkpm
 /packages/lockfile/index.js
 .vscode/
 /build
-/cljs/out
-/cljs/.cpcache
+/out
+/.cpcache

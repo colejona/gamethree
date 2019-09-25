@@ -1,0 +1,1 @@
+clj -m cljs.main --target node --output-to server.js -c server.core
