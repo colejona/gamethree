@@ -8,7 +8,6 @@
     "private": true,
     "scripts": {
         "start": "node server.js",
-        "build": "./build-server.sh",
         "live-server": "nodemon server.js"
     },
     "devDependencies": {
