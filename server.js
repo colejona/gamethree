@@ -19,5 +19,5 @@ try {
 require(path.join(path.resolve("."),"out","goog","bootstrap","nodejs.js"));
 require(path.join(path.resolve("."),"out","cljs_deps.js"));
 goog.global.CLOSURE_UNCOMPILED_DEFINES = {"cljs.core._STAR_target_STAR_":"nodejs"};
-goog.require("server.core");
+goog.require("server.server");
 goog.require("cljs.nodejscli");

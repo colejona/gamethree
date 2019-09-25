@@ -1,4 +1,4 @@
-(ns server.core
+(ns server.server
   (:require ["express"]
             ["socket.io" :as socket-io]
             ["path"]))
