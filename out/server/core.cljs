@@ -1,11 +1,32 @@
 (ns server.core
-  (:require ["express"]))
+  (:require ["express"]
+            ["socket.io" :as socket-io]
+            ["path"]))
 
 (enable-console-print!)
-(set! *warn-on-infer* true)
 
 (println "Starting server...")
-(let [app (express)
-      port (or (-> js/process .-env .-PORT) 5000)]
-  (.get app "/" (fn [req res] (.send res "Hello, world!")))
-  (.listen app port (fn [] (println (str "Example app listening on port " port "!")))))
+
+(def app (express))
+
+(def server
+  (let [port (or (-> js/process .-env .-PORT) 5000)]
+    (.listen app port (fn [] (println (str "Example app listening on port " port "!"))))))
+
+(def io (socket-io server))
+
+(defn serve-client
+  [req resp]
+  (.sendFile resp (.resolve path (str js/__dirname "../../../build/index.html"))))
+
+(.get app "/" serve-client)
+
+(.set io "origins" "*:*")
+
+(defn setup-connection
+  "Sets up a new socket connection."
+  [socket]
+  ; TODO
+  (println "Totally setting up a new socket connection."))
+
+(.on io "connection" setup-connection)
