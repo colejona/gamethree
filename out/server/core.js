@@ -22,7 +22,7 @@ return cljs.core.println.call(null,["Example app listening on port ",cljs.core.s
 })();
 server.core.io = server.core.node$module$socket$io.call(null,server.core.server);
 server.core.serve_client = (function server$core$serve_client(req,resp){
-return resp.sendFile(server.core.node$module$path.resolve([cljs.core.str.cljs$core$IFn$_invoke$arity$1(__dirname),"../../../build/index.html"].join('')));
+return resp.sendFile(server.core.node$module$path.resolve([cljs.core.str.cljs$core$IFn$_invoke$arity$1(__dirname),"../../../index.html"].join('')));
 });
 server.core.app.get("/",server.core.serve_client);
 server.core.io.set("origins","*:*");

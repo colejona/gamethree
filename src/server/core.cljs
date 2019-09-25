@@ -17,7 +17,7 @@
 
 (defn serve-client
   [req resp]
-  (.sendFile resp (.resolve path (str js/__dirname "../../../build/index.html"))))
+  (.sendFile resp (.resolve path (str js/__dirname "../../../index.html"))))
 
 (.get app "/" serve-client)
 

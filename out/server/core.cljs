@@ -17,7 +17,7 @@
 
 (defn serve-client
   [req resp]
-  (.sendFile resp (.resolve path (str js/__dirname "../../../build/index.html"))))
+  (.sendFile resp (.resolve path (str js/__dirname "../../../index.html"))))
 
 (.get app "/" serve-client)
 
@@ -26,7 +26,7 @@
 (defn setup-connection
   "Sets up a new socket connection."
   [socket]
-  ; TODO
+  ; TODO -- this doesn't appear to be called yet
   (println "Totally setting up a new socket connection."))
 
 (.on io "connection" setup-connection)
