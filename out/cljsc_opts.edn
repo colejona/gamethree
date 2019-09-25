@@ -1,0 +1,1 @@
+{:target :nodejs, :output-to "server.js", :main server.core, :output-dir "out", :aot-cache true}
