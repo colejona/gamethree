@@ -8,13 +8,7 @@
     "private": true,
     "scripts": {
         "start": "node server.js",
-        "live": "concurrently --kill-others-on-fail 'yarn live-client' 'yarn live-server'",
-        "live-client": "yarn webpack --watch",
-        "live-server": "nodemon server.js",
-        "build": "yarn webpack",
-        "build-start": "yarn build; yarn start",
-        "microwave": "yarn build; yarn run webpack-dev-server",
-        "heroku-postbuild": "yarn build"
+        "live-server": "nodemon server.js"
     },
     "devDependencies": {
         "babel-core": "6",
