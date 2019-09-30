@@ -1,2 +1,3 @@
 {:deps {org.clojure/clojurescript {:mvn/version "1.10.520"}
-        cljsjs/phaser {:mvn/version "3.18.1-0"}}}
+        cljsjs/phaser {:mvn/version "3.18.1-0"}
+        cljsjs/socket-io-client {:mvn/version "2.1.1-0"}}}
