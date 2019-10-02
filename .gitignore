@@ -25,3 +25,7 @@ test/fixtures/**/.fbkpm
 .vscode/
 /build
 /.cpcache
+.shadow-cljs
+out
+public
+target

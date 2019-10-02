@@ -1,1 +1,0 @@
-clj -m cljs.main -c client.core --repl
