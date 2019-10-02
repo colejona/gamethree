@@ -1,1 +1,0 @@
-clj -m cljs.main --optimizations advanced --output-to client.js -c client.client

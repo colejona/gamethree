@@ -1,14 +1,32 @@
 ;; shadow-cljs configuration
 {:source-paths
- ["src/dev"
-  "src/main"
-  "src/test"]
+ ["src"]
 
- :dependencies
- []
+ :dependencies [[org.clojure/clojure "1.9.0"]
+                [compojure "1.4.0"]
+                [ring/ring-jetty-adapter "1.4.0"]
+                [ring/ring-json "0.4.0"]
+                [environ "1.0.0"]
+                [org.clojure/data.json "0.2.6"]]
 
  :dev-http {8080 "public"}
  :builds
- {:frontend
-  {:target :browser
-   :modules {:main {:init-fn ngame.client.app/init}}}}}
+ {
+     :client
+     {
+         :target :browser
+         :modules
+         {
+             :main
+             {
+                 :init-fn ngame.client.client/init
+             }
+         }
+     }
+     :server
+     {
+         :target :node-script
+         :main ngame.server.server/-main
+         :output-to "target/server.js"
+     }
+}}
