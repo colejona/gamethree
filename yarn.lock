@@ -522,6 +522,11 @@ java@^0.11.1:
     lodash "4.17.14"
     nan "2.11.1"
 
+javac@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/javac/-/javac-1.0.0.tgz#8047c8e72ef10a302054e99d51d88c3c4eb8beaf"
+  integrity sha512-It8p8MZ2JnoTL/bGbCWfoPAXZ2Sj0yVo0SJ2qe3Y7JNqyGUh2D3bJ2caiRsm3u6ccmCC1EbJbaW+YOTCMKgVEg==
+
 lodash@4.17.14:
   version "4.17.14"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.14.tgz#9ce487ae66c96254fe20b599f21b6816028078ba"
