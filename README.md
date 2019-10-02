@@ -6,7 +6,9 @@ _Setup assumes Mac development env. See the attached resources for a non-Mac_
 1. `brew install yarn`
     1. _Not-required if Yarn is already on system_
 1. `yarn install`
-> **TODO**: add Clojure package install command
+    1. Installs the Node dependencies
+1. `yarn build`
+    1. Installs the Clojure dependencies and compiles the ClojureScript to JavaScript
 
 ### Additional Setup Resources
 1. **Yarn**: https://yarnpkg.com/lang/en/docs/install

@@ -1,6 +1,9 @@
 {
     "name": "gamethree",
     "version": "1.0.0",
+    "engines": {
+       "node": "11.5.0"
+    },
     "description": "Game the third",
     "repository": "https://github.com/colejona/gamethree",
     "author": "https://github.com/imann24, https://github.com/colejona",
@@ -8,7 +11,7 @@
     "private": true,
     "scripts": {
         "start": "yarn server",
-        "postinstall": "yarn build",
+        "heroku-postbuild": "yarn build",
         "build": "yarn build-client && yarn build-server",
         "copy-client-static": "mkdir -p public && cp src/ngame/client/static/* public/",
         "build-client": "yarn copy-client-static && shadow-cljs compile client",
