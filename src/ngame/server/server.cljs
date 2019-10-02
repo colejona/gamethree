@@ -12,6 +12,5 @@
 
 (. app (use (serve-static "public" #js {:index "index.html"})))
 
-(def -main
-    (fn []
-        (doto (.createServer http #(app %1 %2)) (.listen (or js/process.env.PORT 3000)))))
+(defn -main []
+    (doto (.createServer http #(app %1 %2)) (.listen (or js/process.env.PORT 3000))))
