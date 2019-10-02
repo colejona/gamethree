@@ -7,6 +7,7 @@
     "license": "MIT",
     "private": true,
     "scripts": {
+        "start": "yarn server",
         "postinstall": "yarn build",
         "build": "yarn build-client && yarn build-server",
         "copy-client-static": "mkdir -p public && cp src/ngame/client/static/* public/",
