@@ -28,6 +28,7 @@ _Setup assumes Mac development env. See the attached resources for a non-Mac_
 1. Make sure your Heroku app has the following build packs installed:
     1. `heroku/node-js`
     1. https://github.com/heroku/heroku-buildpack-jvm-common.git
+        1. Provides `jvm` support to the Heroku instance (required to compile ClojureScript to JS)
         1. Reference: https://help.heroku.com/2FSHO0RR/how-can-i-add-java-to-a-non-java-app
 
 ## Resources

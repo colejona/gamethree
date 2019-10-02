@@ -1,6 +1,5 @@
 (ns ngame.server.server
-    (:require
-        [cljs.nodejs :as nodejs]))
+    (:require [cljs.nodejs :as nodejs]))
 
 (defonce express (nodejs/require "express"))
 (defonce http (nodejs/require "http"))
@@ -15,4 +14,4 @@
 
 (def -main
     (fn []
-        (doto (.createServer http #(app %1 %2)) (.listen 3000))))
+        (doto (.createServer http #(app %1 %2)) (.listen (or js/process.env.PORT 3000)))))
