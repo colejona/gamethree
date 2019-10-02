@@ -3,6 +3,7 @@
 ## Setup
 _Setup assumes Mac development env. See the attached resources for a non-Mac_
 1. Ensure [Homebrew](https://brew.sh) is installed
+1. Install Java 8: https://www.oracle.com/technetwork/java/javase/overview/java8-2100321.html
 1. `brew install yarn`
     1. _Not-required if Yarn is already on system_
 1. `yarn install`
