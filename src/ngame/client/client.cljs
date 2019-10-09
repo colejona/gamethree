@@ -1,4 +1,17 @@
 (ns ngame.client.client)
 
+(defn log
+  [message]
+  (js/console.log (str "[client] " message)))
+
+(declare start)
+
 (defn init []
-    (println "I did say hi!"))
+  (log "init")
+  (start))
+
+(defn start []
+  (log "start"))
+
+(defn stop []
+  (log "stop"))

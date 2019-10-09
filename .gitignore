@@ -27,5 +27,6 @@ test/fixtures/**/.fbkpm
 /.cpcache
 .shadow-cljs
 out
-public
+public/*
+!public/index.html
 target

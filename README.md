@@ -20,6 +20,7 @@ _Setup assumes Mac development env. See the attached resources for a non-Mac_
 1. `yarn start` runs the server and serves down client files
 
 ## Development
+1. *Recommended Dev Command*: `yarn live` - run live reload (server + client files will auto-refresh, but still requires a browser reload to get changes)
 1. `yarn update-server` - rebuilds the server code and starts the server
 1. `yarn build-client` - rebuilds the client code and copies the static resources
 1. `yarn build-server` - rebuilds the server code

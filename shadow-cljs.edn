@@ -13,8 +13,11 @@
   {:target :browser
    
    :modules
-   {:main
-    {:init-fn ngame.client.client/init}}}
+   {:main {:init-fn ngame.client.client/init}}
+   
+   :devtools
+   {:before-load ngame.client.client/stop
+    :after-load ngame.client.client/start}}
   
   :server
   {:target :node-script
