@@ -2,26 +2,21 @@
 {:source-paths
  ["src"]
 
- :dependencies []
+ :dependencies
+ []
 
- :dev-http {8080 "public"}
+ :dev-http
+ {8080 "public"}
+
  :builds
- {
-     :client
-     {
-         :target :browser
-         :modules
-         {
-             :main
-             {
-                 :init-fn ngame.client.client/init
-             }
-         }
-     }
-     :server
-     {
-         :target :node-script
-         :main ngame.server.server/-main
-         :output-to "target/server.js"
-     }
-}}
+ {:client
+  {:target :browser
+   
+   :modules
+   {:main
+    {:init-fn ngame.client.client/init}}}
+  
+  :server
+  {:target :node-script
+   :main ngame.server.server/-main
+   :output-to "target/server.js"}}}
