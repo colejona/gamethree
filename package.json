@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "express": "^4.17.1",
+        "phaser": "^3.19.0",
         "shadow-cljs": "^2.8.58"
     }
 }
