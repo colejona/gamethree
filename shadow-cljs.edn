@@ -2,8 +2,7 @@
 {:source-paths
  ["src"]
 
- :dependencies
- []
+ :deps true
 
  :dev-http
  {8080 "public"}
@@ -11,6 +10,9 @@
  :builds
  {:client
   {:target :browser
+   
+   :build-hooks
+   [(ngame.build.util/copy-static-files)]
    
    :modules
    {:main {:init-fn ngame.client.client/init}}
