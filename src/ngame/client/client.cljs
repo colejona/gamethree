@@ -1,11 +1,14 @@
 (ns ngame.client.client
     (:require ["phaser" :as phaser]))
 
+(defn main-scene [game]
+    (nth game.scene.scenes 0))
+
 (defn preload-fn []
-    (. (. (nth js/game.scene.scenes 0) -load) image "logo" "assets/phaser.png"))
+    (-> (main-scene js/game) .-load (.image "logo" "assets/phaser.png")))
 
 (defn create-fn []
-    (. (. (nth js/game.scene.scenes 0) -add) image 300 240 "logo"))
+    (-> (main-scene js/game) .-add (.image 300 240 "logo")))
 
 (defn init []
     (set! js/game (js/Phaser.Game. (js-obj
