@@ -13,7 +13,7 @@
         "start": "yarn server",
         "heroku-postbuild": "yarn build",
         "build": "yarn build-client && yarn build-server",
-        "copy-client-static": "mkdir -p public && cp src/ngame/client/static/* public/",
+        "copy-client-static": "mkdir -p public && cp -r src/ngame/client/static/* public/",
         "build-client": "yarn copy-client-static && shadow-cljs compile client",
         "build-server": "shadow-cljs compile server",
         "server": "node target/server.js",
@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "express": "^4.17.1",
+        "phaser": "^3.19.0",
         "shadow-cljs": "^2.8.58"
     }
 }
