@@ -2,8 +2,9 @@
 {:source-paths
  ["src"]
 
- :deps true
-
+ :dependencies
+ [[me.raynes/fs "1.4.6"]]
+ 
  :dev-http
  {8080 "public"}
 
