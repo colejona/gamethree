@@ -12,9 +12,9 @@
     "scripts": {
         "start": "yarn server",
         "heroku-postbuild": "yarn build",
+        "live": "shadow-cljs watch client server",
         "build": "yarn build-client && yarn build-server",
-        "copy-client-static": "mkdir -p public && cp -r src/ngame/client/static/* public/",
-        "build-client": "yarn copy-client-static && shadow-cljs compile client",
+        "build-client": "shadow-cljs compile client",
         "build-server": "shadow-cljs compile server",
         "server": "node target/server.js",
         "update-server": "yarn build-server && yarn server"

@@ -7,10 +7,7 @@
 
 (def app (express))
 
-(. app (get "/hello"
-    (fn [req res] (. res (send "Hello World!")))))
-
 (. app (use (serve-static "public" #js {:index "index.html"})))
 
 (defn -main []
-    (doto (.createServer http #(app %1 %2)) (.listen (or js/process.env.PORT 3000))))
+    (doto (.createServer http #(app %1 %2)) (.listen js/process.env.PORT)))
