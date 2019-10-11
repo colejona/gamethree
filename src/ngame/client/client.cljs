@@ -31,4 +31,5 @@
                                            "create" create-fn)))))
 
 (defn stop []
-  (log "stop"))
+  (log "stop")
+  (.destroy js/game true))
