@@ -12,16 +12,19 @@
     "scripts": {
         "start": "yarn server",
         "heroku-postbuild": "yarn build",
-        "live": "shadow-cljs watch client server",
-        "build": "yarn build-client && yarn build-server",
+        "live": "shadow-cljs watch client authoritative-server server",
+        "build": "yarn build-client  && yarn build-authoritative-server && yarn build-server",
         "build-client": "shadow-cljs compile client",
+        "build-authoritative-server": "shadow-cljs compile authoritative-server",
         "build-server": "shadow-cljs compile server",
         "server": "node target/server.js",
         "update-server": "yarn build-server && yarn server"
     },
     "dependencies": {
+        "canvas": "^2.6.0",
         "express": "^4.17.1",
-        "phaser": "^3.19.0",
+        "jsdom": "^15.1.1",
+        "phaser": "^3.20.0",
         "shadow-cljs": "^2.8.58"
     }
 }
