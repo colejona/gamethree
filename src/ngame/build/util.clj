@@ -22,8 +22,14 @@
                from))
         to))))
 
-(defn copy-static-files
+(defn copy-client-static-files
   {:shadow.build/stage :compile-prepare}
   [build-state & args]
   (copy-dir "src/ngame/client/static" "public")
+  build-state)
+
+(defn copy-server-static-files
+  {:shadow.build/stage :compile-prepare}
+  [build-state & args]
+  (copy-dir "src/ngame/server/authoritative_server/static" "target/authoritative_server")
   build-state)
