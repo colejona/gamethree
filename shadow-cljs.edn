@@ -40,8 +40,4 @@
    :output-to "target/server.js"
 
    :build-hooks
-   [(ngame.build.util/copy-server-static-files)]
-
-   :devtools
-   {:before-load-async ngame.server.server/stop
-    :after-load ngame.server.server/start}}}}
+   [(ngame.build.util/copy-server-static-files)]}}}
