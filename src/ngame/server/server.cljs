@@ -42,6 +42,6 @@
   [done]
   (log "stop called")
   (when-some [srv @server-ref]
-    (.close srv
-            #((log "stop completed")
-              (done)))))
+    (.close srv (fn [err]
+                  (log "stop completed")
+                  (done)))))
