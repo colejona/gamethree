@@ -22,13 +22,11 @@
 
 (defn start []
   (log "start")
-  (set! js/game (js/Phaser.Game. (js-obj
-                                  "type" js/Phaser.AUTO
-                                  "width" 600
-                                  "height" 480
-                                  "scene" (js-obj
-                                           "preload" preload-fn
-                                           "create" create-fn)))))
+  (set! js/game (js/Phaser.Game. (clj->js {:type js/Phaser.AUTO
+                                           :width 600
+                                           :height 480
+                                           :scene {:preload preload-fn
+                                                   :create create-fn}}))))
 
 (defn stop []
   (log "stop")
