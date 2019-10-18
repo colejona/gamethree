@@ -28,7 +28,7 @@
       (if (= js/window.location.protocol "https:") "wss" "ws")
       (str "://" js/window.location.hostname ":")
       (if (string/includes? js/window.location.host ":")
-        (if (boolean (exists? js/process.env.PORT))
+        (if (exists? js/process.env.PORT)
             js/process.env.PORT
             "3000")
         "")
