@@ -10,6 +10,10 @@ _Setup assumes Mac development env. See the attached resources for a non-Mac_
     1. Installs the Node dependencies
 1. `yarn build`
     1. Installs the Clojure dependencies and compiles the ClojureScript to JavaScript
+1. Consider installing [EditorConfig](https://editorconfig.org) for the IDE of your choice
+    1. Allows project-specific formatting rules
+    1. _Supports most popular code editors_
+    1. Config in the `.editorconfig` file at the project's root directory
 
 ### Additional Setup Resources
 1. **Yarn**: https://yarnpkg.com/lang/en/docs/install

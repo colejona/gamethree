@@ -17,19 +17,20 @@
   [message]
   (js/console.log (str "[server] " message)))
 
+(defn create-socket-listeners [client-socket]
+  (.emit client-socket "wave" "Server says hello!")
+  (.on client-socket "wave-back"
+  (fn [event]
+    (log (str "Client says " event)))))
+
 (defn -main []
   (log "starting server")
   (let [server (http/createServer #(app %1 %2))
-        virtualConsole (new (aget jsdom "VirtualConsole"))]
+        virtualConsole (new (aget jsdom "VirtualConsole"))
+        io (socket server)]
     (.listen server (or js/process.env.PORT 3000))
-    (def io (socket server))
     (.set io "origins" "*:*")
-    (.on io "connection"
-        (fn [client-socket]
-            (.emit client-socket "wave" "Server says hello!")
-            (.on client-socket "wave-back"
-                (fn [event]
-                    (log (str "Client says " event))))))
+    (.on io "connection" create-socket-listeners)
     (vreset! server-ref server)
 
     (.sendTo virtualConsole js/console)
