@@ -6,7 +6,14 @@ jobs:
       - image: circleci/openjdk:jdk-node
     steps:
       - checkout
-      # Install yarn
-      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
-      - run: yarn install
-      - run: yarn build
+      - run:
+        name: "Update Node.js and npm"
+        command: |
+          curl -sSL "https://nodejs.org/dist/v11.11.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+          curl https://www.npmjs.com/install.sh | sudo bash
+      - run:
+        name: "Install"
+        command: yarn install
+      - run:
+        name: "Build"
+        command: yarn build
