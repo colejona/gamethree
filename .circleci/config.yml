@@ -1,0 +1,11 @@
+version: 2
+ jobs:
+   build:
+     docker:
+       - image: buildpack-deps:trusty
+       - image: circleci/node
+       - image: circleci/clojure
+     steps:
+       - checkout
+       - run: yarn install
+       - run: yarn build
