@@ -3,10 +3,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: buildpack-deps:trusty
-      - image: circleci/node
-        command: [yarn]
+      - image: circleci/clojure
     steps:
       - checkout
+      # Install yarn
+      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
       - run: yarn install
       - run: yarn build
