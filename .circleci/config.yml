@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/clojure
+      - image: circleci/openjdk:jdk-node
     steps:
       - checkout
       # Install yarn
