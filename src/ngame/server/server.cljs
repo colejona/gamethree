@@ -2,7 +2,8 @@
   (:require ["express" :as express])
   (:require ["http" :as http])
   (:require ["serve-static" :as serve-static])
-  (:require ["jsdom" :as jsdom]))
+  (:require ["jsdom" :as jsdom])
+  (:require ["socket.io" :as socket]))
 
 (def app (express))
 (def JSDOM (aget jsdom "JSDOM"))
@@ -16,12 +17,20 @@
   [message]
   (js/console.log (str "[server] " message)))
 
+(defn create-socket-listeners [client-socket]
+  (.emit client-socket "wave" "Server says hello!")
+  (.on client-socket "wave-back"
+  (fn [event]
+    (log (str "Client says " event)))))
+
 (defn -main []
   (log "starting server")
   (let [server (http/createServer #(app %1 %2))
-        virtualConsole (new (aget jsdom "VirtualConsole"))]
-
-    (.listen server js/process.env.PORT)
+        virtualConsole (new (aget jsdom "VirtualConsole"))
+        io (socket server)]
+    (.listen server (or js/process.env.PORT 3000))
+    (.set io "origins" "*:*")
+    (.on io "connection" create-socket-listeners)
     (vreset! server-ref server)
 
     (.sendTo virtualConsole js/console)
