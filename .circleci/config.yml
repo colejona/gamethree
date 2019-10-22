@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/clojure-tools-deps-stretch
+      - image: circleci/clojure:tools-deps-stretch
     steps:
       - checkout
       - run: yarn install
