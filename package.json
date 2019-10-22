@@ -25,6 +25,8 @@
         "express": "^4.17.1",
         "jsdom": "^15.1.1",
         "phaser": "^3.20.0",
-        "shadow-cljs": "^2.8.58"
+        "shadow-cljs": "^2.8.58",
+        "socket.io": "^2.3.0",
+        "socket.io-client": "^2.3.0"
     }
 }
