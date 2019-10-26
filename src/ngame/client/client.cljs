@@ -21,11 +21,14 @@
   (-> (main-scene js/game) .-add (.image 300 240 "logo"))
   (def keyboard (game-input/setup-input (main-scene js/game))))
 
+(defn key-is-down [key]
+  (-> (key keyboard) .-isDown))
+
 (defn update-fn []
-  (if (-> (:w_key keyboard) .-isDown) (log "'W' key is down"))
-  (if (-> (:a_key keyboard) .-isDown) (log "'A' key is down"))
-  (if (-> (:s_key keyboard) .-isDown) (log "'S' key is down"))
-  (if (-> (:d_key keyboard) .-isDown) (log "'D' key is down")))
+  (if (key-is-down :w_key) (log "'W' key is down"))
+  (if (key-is-down :a_key) (log "'A' key is down"))
+  (if (key-is-down :s_key) (log "'S' key is down"))
+  (if (key-is-down :d_key) (log "'D' key is down")))
 
 (declare start)
 
