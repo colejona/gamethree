@@ -15,20 +15,15 @@
 (defn preload-fn []
   (-> (main-scene js/game) .-load (.image "logo" "assets/phaser.png")))
 
-(declare keyboard)
-
 (defn create-fn []
   (-> (main-scene js/game) .-add (.image 300 240 "logo"))
-  (def keyboard (game-input/setup-input (main-scene js/game))))
-
-(defn key-is-down [key]
-  (-> (key keyboard) .-isDown))
+  (game-input/setup-input (main-scene js/game)))
 
 (defn update-fn []
-  (if (key-is-down :w_key) (log "'W' key is down"))
-  (if (key-is-down :a_key) (log "'A' key is down"))
-  (if (key-is-down :s_key) (log "'S' key is down"))
-  (if (key-is-down :d_key) (log "'D' key is down")))
+  (if (game-input/key-is-down :w_key) (log "'W' key is down"))
+  (if (game-input/key-is-down :a_key) (log "'A' key is down"))
+  (if (game-input/key-is-down :s_key) (log "'S' key is down"))
+  (if (game-input/key-is-down :d_key) (log "'D' key is down")))
 
 (declare start)
 
