@@ -1,5 +1,5 @@
 (ns ngame.client.client
-  (:require [ngame.client.input :as game-input])
+  (:use [ngame.client.input :only [setup-input key-is-down]])
   (:require [clojure.string :as string])
   (:require ["phaser" :as phaser])
   (:require ["socket.io-client" :as socket]))
@@ -17,13 +17,13 @@
 
 (defn create-fn []
   (-> (main-scene js/game) .-add (.image 300 240 "logo"))
-  (game-input/setup-input (main-scene js/game)))
+  (setup-input (main-scene js/game)))
 
 (defn update-fn []
-  (if (game-input/key-is-down :w_key) (log "'W' key is down"))
-  (if (game-input/key-is-down :a_key) (log "'A' key is down"))
-  (if (game-input/key-is-down :s_key) (log "'S' key is down"))
-  (if (game-input/key-is-down :d_key) (log "'D' key is down")))
+  (if (key-is-down :w_key) (log "'W' key is down"))
+  (if (key-is-down :a_key) (log "'A' key is down"))
+  (if (key-is-down :s_key) (log "'S' key is down"))
+  (if (key-is-down :d_key) (log "'D' key is down")))
 
 (declare start)
 
