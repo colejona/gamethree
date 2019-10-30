@@ -1,4 +1,5 @@
 (ns ngame.client.client
+  (:use [ngame.client.input :only [setup-input key-is-down]])
   (:require [clojure.string :as string])
   (:require ["phaser" :as phaser])
   (:require ["socket.io-client" :as socket]))
@@ -6,15 +7,23 @@
 (defn main-scene [game]
   (nth game.scene.scenes 0))
 
-(defn preload-fn []
-  (-> (main-scene js/game) .-load (.image "logo" "assets/phaser.png")))
-
-(defn create-fn []
-  (-> (main-scene js/game) .-add (.image 300 240 "logo")))
 
 (defn log
   [message]
   (js/console.log (str "[client] " message)))
+
+(defn preload-fn []
+  (-> (main-scene js/game) .-load (.image "logo" "assets/phaser.png")))
+
+(defn create-fn []
+  (-> (main-scene js/game) .-add (.image 300 240 "logo"))
+  (setup-input (main-scene js/game)))
+
+(defn update-fn []
+  (if (key-is-down :w_key) (log "'W' key is down"))
+  (if (key-is-down :a_key) (log "'A' key is down"))
+  (if (key-is-down :s_key) (log "'S' key is down"))
+  (if (key-is-down :d_key) (log "'D' key is down")))
 
 (declare start)
 
@@ -45,7 +54,8 @@
                                              :width 600
                                              :height 480
                                              :scene {:preload preload-fn
-                                             :create create-fn}})))
+                                                     :create create-fn
+                                                     :update update-fn}})))
     (create-socket-listeners io)))
 
 (defn stop []
