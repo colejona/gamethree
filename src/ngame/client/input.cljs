@@ -7,7 +7,9 @@
 
 (defn setup-input [scene key-down-handler key-up-handler]
   (let [keyboard (.-keyboard (.-input scene))]
-    (set-handlers keyboard "W" :w_key key-down-handler key-up-handler)
-    (set-handlers keyboard "A" :a_key key-down-handler key-up-handler)
-    (set-handlers keyboard "S" :s_key key-down-handler key-up-handler)
-    (set-handlers keyboard "D" :d_key key-down-handler key-up-handler)))
+    (def foo #(set-handlers keyboard %1 %2 key-down-handler key-up-handler))
+    ;; There has to be a better way to do this. `apply`?
+    (foo "W" :w_key)
+    (foo "A" :a_key)
+    (foo "S" :s_key)
+    (foo "D" :d_key)))
