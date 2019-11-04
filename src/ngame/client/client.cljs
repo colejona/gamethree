@@ -22,49 +22,35 @@
 (def vertical-movement (atom 0))
 (def horizontal-movement (atom 0))
 
+(defn make-movement-watcher
+  [opposite-direction composite-direction directional-factor]
+  (fn [key atom old-state new-state]
+    (if (not= old-state new-state)
+      (case new-state
+        0 (case opposite-direction
+            0 (reset! composite-direction 0)
+            (reset! composite-direction (* (- directional-factor) @opposite-direction)))
+        (reset! composite-direction (* directional-factor new-state))))))
+
 (add-watch up-movement nil
-           (fn [key atom old-state new-state]
-             (if (not= old-state new-state) ; do we need this check?
-               (case new-state
-                 0 (case down-movement
-                     0 (reset! vertical-movement 0)
-                     (reset! vertical-movement @down-movement))
-                 (reset! vertical-movement (- new-state))))))
+           (make-movement-watcher down-movement vertical-movement -1))
 
 (add-watch down-movement nil
-           (fn [key atom old-state new-state]
-             (if (not= old-state new-state) ; do we need this check?
-               (case new-state
-                 0 (case up-movement
-                     0 (reset! vertical-movement 0)
-                     (reset! vertical-movement (- @up-movement)))
-                 (reset! vertical-movement new-state)))))
+           (make-movement-watcher up-movement vertical-movement 1))
 
 (add-watch left-movement nil
-           (fn [key atom old-state new-state]
-             (if (not= old-state new-state) ; do we need this check?
-               (case new-state
-                 0 (case right-movement
-                     0 (reset! horizontal-movement 0)
-                     (reset! horizontal-movement @right-movement))
-                 (reset! horizontal-movement (- new-state))))))
+           (make-movement-watcher right-movement horizontal-movement -1))
 
 (add-watch right-movement nil
-           (fn [key atom old-state new-state]
-             (if (not= old-state new-state) ; do we need this check?
-               (case new-state
-                 0 (case left-movement
-                     0 (reset! horizontal-movement 0)
-                     (reset! horizontal-movement (- @left-movement)))
-                 (reset! horizontal-movement new-state)))))
+           (make-movement-watcher left-movement horizontal-movement 1))
 
 (add-watch vertical-movement nil
            (fn [key atom old-state new-state]
-             (log (str "Vertical movement changed: " new-state))))
+             (if (not= old-state new-state) (log (str "Vertical movement changed: " new-state)))))
 
 (add-watch horizontal-movement nil
            (fn [key atom old-state new-state]
-             (log (str "Horizontal movement changed: " new-state))))
+             (if (not= old-state new-state) (log (str "Horizontal movement changed: " new-state)))))
 
 (defn handle-key-down
   [key]
@@ -74,7 +60,7 @@
     :s_key (reset! down-movement movement-speed)
     :d_key (reset! right-movement movement-speed)))
 
-(defn handle-key-up 
+(defn handle-key-up
   [key]
   (case key
     :w_key (reset! up-movement 0)
