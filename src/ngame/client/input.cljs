@@ -1,9 +1,9 @@
 (ns ngame.client.input)
 
 (defn set-handlers
-  [keyboard keycode key key-down-handler key-up-handler]
-  (.on keyboard (str "keydown-" keycode) #(key-down-handler key))
-  (.on keyboard (str "keyup-" keycode) #(key-up-handler key)))
+  [keyboard letter key key-down-handler key-up-handler]
+  (.on keyboard (str "keydown-" letter) #(key-down-handler key))
+  (.on keyboard (str "keyup-" letter) #(key-up-handler key)))
 
 (defn setup-input [scene key-down-handler key-up-handler]
   (let [keyboard (.-keyboard (.-input scene))]
