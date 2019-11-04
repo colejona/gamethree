@@ -18,12 +18,12 @@
 (def vertical-movement (atom 0))
 (add-watch vertical-movement :vertical-movement-watcher
            (fn [key atom old-state new-state]
-             (if (not= old-state new-state) (log (str "Vertical movement changed: " new-state)))))
+             (log (str "Vertical movement changed: " new-state))))
 
 (def horizontal-movement (atom 0))
 (add-watch horizontal-movement :horizontal-movement-watcher
            (fn [key atom old-state new-state]
-             (if (not= old-state new-state) (log (str "Horizontal movement changed: " new-state)))))
+             (log (str "Horizontal movement changed: " new-state))))
 
 (defn request-movement
   [direction value]
