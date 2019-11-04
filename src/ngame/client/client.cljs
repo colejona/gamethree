@@ -3,7 +3,7 @@
   (:require [clojure.string :as string])
   (:require ["phaser" :as phaser])
   (:require ["socket.io-client" :as socket])
-  (:use [ngame.constants :only [movement-speed]]))
+  (:use [ngame.common.constants :only [movement-speed]]))
 
 (defn main-scene [game]
   (nth game.scene.scenes 0))
