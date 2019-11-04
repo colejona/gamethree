@@ -1,19 +1,11 @@
 (ns ngame.client.input)
 
-(declare keyboard)
+(defn set-handlers
+  [keyboard letter key key-down-handler key-up-handler]
+  (.on keyboard (str "keydown-" letter) #(key-down-handler key))
+  (.on keyboard (str "keyup-" letter) #(key-up-handler key)))
 
-(defn key-is-down [key]
-  (-> (key keyboard) .-isDown))
-
-(defn add-key [scene key]
-  (.input.keyboard.addKey scene key))
-
-(defn setup-keys [scene]
-  (let [keycode js/Phaser.Input.Keyboard.KeyCodes]
-    { :w_key (add-key scene keycode.W)
-      :a_key (add-key scene keycode.A)
-      :s_key (add-key scene keycode.S)
-      :d_key (add-key scene keycode.D)}))
-
-(defn setup-input [scene]
-  (def keyboard (setup-keys scene)))
+(defn setup-input [scene key-down-handler key-up-handler]
+  (let [keyboard (.-keyboard (.-input scene))]
+    (doseq [[letter key] [["W" :w_key] ["A" :a_key] ["S" :s_key] ["D" :d_key]]]
+      (set-handlers keyboard letter key key-down-handler key-up-handler))))
