@@ -15,35 +15,72 @@
 (defn preload-fn []
   (-> (main-scene js/game) .-load (.image "logo" "assets/phaser.png")))
 
+(def up-movement (atom 0))
+(def down-movement (atom 0))
+(def left-movement (atom 0))
+(def right-movement (atom 0))
 (def vertical-movement (atom 0))
-(add-watch vertical-movement :vertical-movement-watcher
+(def horizontal-movement (atom 0))
+
+(add-watch up-movement nil
+           (fn [key atom old-state new-state]
+             (if (not= old-state new-state) ; do we need this check?
+               (case new-state
+                 0 (case down-movement
+                     0 (reset! vertical-movement 0)
+                     (reset! vertical-movement @down-movement))
+                 (reset! vertical-movement (- new-state))))))
+
+(add-watch down-movement nil
+           (fn [key atom old-state new-state]
+             (if (not= old-state new-state) ; do we need this check?
+               (case new-state
+                 0 (case up-movement
+                     0 (reset! vertical-movement 0)
+                     (reset! vertical-movement (- @up-movement)))
+                 (reset! vertical-movement new-state)))))
+
+(add-watch left-movement nil
+           (fn [key atom old-state new-state]
+             (if (not= old-state new-state) ; do we need this check?
+               (case new-state
+                 0 (case right-movement
+                     0 (reset! horizontal-movement 0)
+                     (reset! horizontal-movement @right-movement))
+                 (reset! horizontal-movement (- new-state))))))
+
+(add-watch right-movement nil
+           (fn [key atom old-state new-state]
+             (if (not= old-state new-state) ; do we need this check?
+               (case new-state
+                 0 (case left-movement
+                     0 (reset! horizontal-movement 0)
+                     (reset! horizontal-movement (- @left-movement)))
+                 (reset! horizontal-movement new-state)))))
+
+(add-watch vertical-movement nil
            (fn [key atom old-state new-state]
              (log (str "Vertical movement changed: " new-state))))
 
-(def horizontal-movement (atom 0))
-(add-watch horizontal-movement :horizontal-movement-watcher
+(add-watch horizontal-movement nil
            (fn [key atom old-state new-state]
              (log (str "Horizontal movement changed: " new-state))))
-
-(defn request-movement
-  [direction value]
-  (case direction
-    :vertical (if (not= @vertical-movement value) (reset! vertical-movement value))
-    :horizontal (if (not= @horizontal-movement value) (reset! horizontal-movement value))))
 
 (defn handle-key-down
   [key]
   (case key
-    :w_key (request-movement :vertical (- movement-speed))
-    :a_key (request-movement :horizontal (- movement-speed))
-    :s_key (request-movement :vertical movement-speed)
-    :d_key (request-movement :horizontal movement-speed)))
+    :w_key (reset! up-movement movement-speed)
+    :a_key (reset! left-movement movement-speed)
+    :s_key (reset! down-movement movement-speed)
+    :d_key (reset! right-movement movement-speed)))
 
 (defn handle-key-up 
   [key]
   (case key
-    (:w_key :s_key) (request-movement :vertical 0)
-    (:a_key :d_key) (request-movement :horizontal 0)))
+    :w_key (reset! up-movement 0)
+    :a_key (reset! left-movement 0)
+    :s_key (reset! down-movement 0)
+    :d_key (reset! right-movement 0)))
 
 (defn create-fn []
   (-> (main-scene js/game) .-add (.image 300 240 "logo"))
