@@ -13,15 +13,23 @@
 (defonce server-ref
   (volatile! nil))
 
+(defonce socket-ref
+  (volatile! nil))
+
 (defn log
   [message]
   (js/console.log (str "[server] " message)))
 
-(defn create-socket-listeners [client-socket]
-  (.emit client-socket "wave" "Server says hello!")
-  (.on client-socket "wave-back"
-  (fn [event]
-    (log (str "Client says " event)))))
+(defn set-up-new-player
+  [client-socket dom]
+  (.emit client-socket "player-established" 300 240)
+  (.on client-socket "client-player-ready"
+       (fn [event]
+         (log (str "Client says " event)))))
+
+(defn start-accepting-connections
+  [io dom]
+  (.on io "connect" #(set-up-new-player % dom)))
 
 (defn -main []
   (log "starting server")
@@ -30,15 +38,16 @@
         io (socket server)]
     (.listen server (or js/process.env.PORT 3000))
     (.set io "origins" "*:*")
-    (.on io "connection" create-socket-listeners)
     (vreset! server-ref server)
-
+    (vreset! socket-ref io)
     (.sendTo virtualConsole js/console)
-    (JSDOM.fromFile (str js/__dirname "/authoritative_server/index.html")
-                    #js {:virtualConsole virtualConsole
-                         :runScripts "dangerously"
-                         :resources "usable"
-                         :pretendToBeVisual true})))
+    (-> (JSDOM.fromFile (str js/__dirname "/authoritative_server/index.html")
+                        #js {:virtualConsole virtualConsole
+                             :runScripts "dangerously"
+                             :resources "usable"
+                             :pretendToBeVisual true})
+        (.then (fn [dom]
+                 (start-accepting-connections io dom))))))
 
 (defn start
   "Hot code reload hook."
@@ -50,6 +59,8 @@
   "Hot code reload hook to shut down resources."
   [done]
   (log "stop called")
+  (when-some [socket @socket-ref]
+    (.close socket))
   (when-some [srv @server-ref]
     (.close srv (fn [err]
                   (log "stop completed")
