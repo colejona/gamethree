@@ -22,7 +22,6 @@
 
 (defn set-up-new-player
   [client-socket dom]
-  ;; TODO: create the player in the authoritative-server and get the "player-established" coordinates from the result of that.
   (.emit client-socket "player-established" 300 240)
   (.on client-socket "client-player-ready"
        (fn [event]

@@ -40,7 +40,7 @@
   (.on io "player-established"
        (fn [x y]
          (log "Player established on server.")
-         (-> (main-scene js/game) .-add (.image x y "player")) ;; TODO: if already there, update its position
+         (-> (main-scene js/game) .-add (.image x y "player"))
          (.emit io "client-player-ready" "Hello World"))))
 
 (defn create-socket-listeners
