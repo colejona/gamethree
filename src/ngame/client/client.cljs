@@ -1,8 +1,12 @@
 (ns ngame.client.client
   (:use [ngame.client.movement :only [setup-movement]])
+  (:require [ngame.common.constants :as const])
   (:require [clojure.string :as string])
   (:require ["phaser" :as phaser])
   (:require ["socket.io-client" :as socket]))
+
+(defonce socket-ref
+  (volatile! nil))
 
 (defn main-scene [game]
   (nth game.scene.scenes 0))
@@ -16,10 +20,14 @@
 
 (defn on-vertical-movement-change
   [value]
+  (.emit @socket-ref const/vert-move-evt #js {:axis value
+                                              :date (js/Date.now)})
   (log (str "Vertical movement changed: " value)))
 
 (defn on-horizontal-movement-change
   [value]
+  (.emit @socket-ref const/hor-move-evt #js {:axis value
+                                             :date (js/Date.now)})
   (log (str "Horizontal movement changed: " value)))
 
 (defn create-fn []
@@ -46,9 +54,6 @@
 (defn create-socket-listeners
   [io]
   (.once io "connect" #(listen-for-player-established % io)))
-
-(defonce socket-ref
-  (volatile! nil))
 
 (defn start []
   (log "start")
