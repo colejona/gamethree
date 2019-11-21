@@ -1,10 +1,9 @@
 (ns ngame.server.authoritative-server.game
+  (:use [ngame.common.phaser :only [main-scene add-image load-image]])
   (:require ["phaser" :as phaser]))
 
-(defn main-scene [game]
-  (nth game.scene.scenes 0))
-
-(defn preload-fn [])
+(defn preload-fn []
+  (load-image js/game "player" "assets/red_square.png"))
 
 (defn create-fn [])
 
@@ -33,3 +32,11 @@
 (defn stop []
   (log "stop")
   (.destroy js/game true))
+
+(defn ^:export add-player
+  [id player-established-callback]
+  (let [x 300
+        y 240]
+    (log (str "Adding player `" id "` at " x "," y))
+    (add-image js/game x y "player")
+    (player-established-callback x y)))

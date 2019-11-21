@@ -22,10 +22,12 @@
 
 (defn set-up-new-player
   [client-socket dom]
-  (.emit client-socket "player-established" 300 240)
-  (.on client-socket "client-player-ready"
-       (fn [event]
-         (log (str "Client says " event)))))
+  (let [dom-add-player-fn dom.window.ngame.server.authoritative_server.game.add-player
+        id (.-id client-socket)
+        on-player-established #(.emit client-socket "player-established" %1 %2)]
+    (log (str "Adding player: " id))
+    (dom-add-player-fn id on-player-established)
+    (.on client-socket "client-player-ready" #(log (str "Client says " %)))))
 
 (defn start-accepting-connections
   [io dom]

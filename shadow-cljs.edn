@@ -4,40 +4,42 @@
 
  :dependencies
  [[me.raynes/fs "1.4.6"]]
- 
+
  :dev-http
  {8080 "public"}
 
  :builds
  {:client
   {:target :browser
-   
+
    :build-hooks
-   [(ngame.build.util/copy-client-static-files)]
-   
+   [(ngame.build.util/copy-client-static-files)
+    (ngame.build.util/copy-common-static-files "public")]
+
    :modules
    {:main {:init-fn ngame.client.client/init}}
-   
+
    :devtools
    {:before-load ngame.client.client/stop
     :after-load ngame.client.client/start}}
-  
+
   :authoritative-server
   {:target :browser
-   
+
    :modules
    {:main {:init-fn ngame.server.authoritative-server.game/init}}
-   
+
    :devtools
    {:before-load ngame.server.authoritative-server.game/stop
     :after-load ngame.server.authoritative-server.game/start}
-   
+
    :output-dir "target/authoritative_server"}
-  
+
   :server
   {:target :node-script
    :main ngame.server.server/-main
    :output-to "target/server.js"
 
    :build-hooks
-   [(ngame.build.util/copy-server-static-files)]}}}
+   [(ngame.build.util/copy-server-static-files)
+    (ngame.build.util/copy-common-static-files "target/authoritative_server")]}}}

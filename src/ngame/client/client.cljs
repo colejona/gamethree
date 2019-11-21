@@ -1,18 +1,16 @@
 (ns ngame.client.client
   (:use [ngame.client.movement :only [setup-movement]])
+  (:use [ngame.common.phaser :only [main-scene add-image load-image]])
   (:require [clojure.string :as string])
   (:require ["phaser" :as phaser])
   (:require ["socket.io-client" :as socket]))
-
-(defn main-scene [game]
-  (nth game.scene.scenes 0))
 
 (defn log
   [message]
   (js/console.log (str "[client] " message)))
 
 (defn preload-fn []
-  (-> (main-scene js/game) .-load (.image "player" "assets/red_square.png")))
+  (load-image js/game "player" "assets/red_square.png"))
 
 (defn on-vertical-movement-change
   [value]
@@ -39,8 +37,8 @@
   [io-socket io]
   (.on io "player-established"
        (fn [x y]
-         (log "Player established on server.")
-         (-> (main-scene js/game) .-add (.image x y "player"))
+         (log (str "Player established on server at " x "," y))
+         (add-image js/game x y "player")
          (.emit io "client-player-ready" "Hello World"))))
 
 (defn create-socket-listeners
