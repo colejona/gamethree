@@ -18,16 +18,19 @@
 (defn preload-fn []
   (-> (main-scene js/game) .-load (.image "player" "assets/red_square.png")))
 
+(defn movement-event
+  [value]
+  #js {:axis value
+       :date (js/Date.now)})
+
 (defn on-vertical-movement-change
   [value]
-  (.emit @socket-ref const/vert-move-evt #js {:axis value
-                                              :date (js/Date.now)})
+  (.emit @socket-ref const/vert-move-evt (movement-event value))
   (log (str "Vertical movement changed: " value)))
 
 (defn on-horizontal-movement-change
   [value]
-  (.emit @socket-ref const/hor-move-evt #js {:axis value
-                                             :date (js/Date.now)})
+  (.emit @socket-ref const/hor-move-evt (movement-event value))
   (log (str "Horizontal movement changed: " value)))
 
 (defn create-fn []
