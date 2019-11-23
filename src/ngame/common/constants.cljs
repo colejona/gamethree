@@ -1,5 +1,6 @@
 (ns ngame.common.constants)
 
 (defonce movement-speed 100)
-(defonce vert-move-evt "verticial-movement-event")
-(defonce hor-move-evt "horizontal-movement-event")
+(defonce key-evt "key-event")
+(defonce key-up-evt "key-up")
+(defonce key-down-evt "key-down")

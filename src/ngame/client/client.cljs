@@ -25,16 +25,17 @@
 
 (defn on-vertical-movement-change
   [value]
-  (.emit @socket-ref const/vert-move-evt (movement-event value))
   (log (str "Vertical movement changed: " value)))
 
 (defn on-horizontal-movement-change
   [value]
-  (.emit @socket-ref const/hor-move-evt (movement-event value))
   (log (str "Horizontal movement changed: " value)))
 
 (defn create-fn []
-  (setup-movement (main-scene js/game) on-vertical-movement-change on-horizontal-movement-change))
+  (setup-movement (main-scene js/game)
+                  on-vertical-movement-change
+                  on-horizontal-movement-change
+                  @socket-ref))
 
 (defn update-fn [])
 
