@@ -1,6 +1,7 @@
 (ns ngame.server.authoritative-server.game
-  (:use [ngame.common.phaser :only [main-scene add-image load-image]])
-  (:require ["phaser" :as phaser]))
+  (:use [ngame.common.phaser-util :only [main-scene add-image load-image]])
+  (:require ["phaser" :as phaser])
+  (:require ["datauri" :as datauri]))
 
 (defn preload-fn []
   (load-image js/game "player" "assets/red_square.png"))
@@ -10,13 +11,14 @@
 (defn update-fn [])
 
 (defn log
-  [message]
-  (js/console.log (str "[authoritative-server] " message)))
+  [& args]
+  (js/console.log (apply str (concat "[authoritative-server] " args))))
 
 (declare start)
 
 (defn init []
   (log "init")
+  (js/fixMissingUrlFunctions (datauri.))
   (start))
 
 (defn start []

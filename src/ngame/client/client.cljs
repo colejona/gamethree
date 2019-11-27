@@ -1,6 +1,6 @@
 (ns ngame.client.client
   (:use [ngame.client.movement :only [setup-movement]])
-  (:use [ngame.common.phaser :only [main-scene add-image load-image]])
+  (:use [ngame.common.phaser-util :only [main-scene add-image load-image]])
   (:require [clojure.string :as string])
   (:require ["phaser" :as phaser])
   (:require ["socket.io-client" :as socket]))

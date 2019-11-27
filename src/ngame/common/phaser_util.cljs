@@ -1,4 +1,4 @@
-(ns ngame.common.phaser)
+(ns ngame.common.phaser-util)
 
 (defn main-scene [game]
   (nth game.scene.scenes 0))
