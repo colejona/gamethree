@@ -24,17 +24,19 @@
   #js {:axis value
        :date (js/Date.now)})
 
+(defn emit-key-event
+  [event key]
+  (.emit @socket-ref const/key-evt
+         #js {:event event
+              :key (name key)}))
+
 (defn on-key-down
   [key]
-  (.emit @socket-ref const/key-evt
-         #js {:event const/key-down-evt
-              :key key}))
+  (emit-key-event const/key-down-evt key))
 
 (defn on-key-up
   [key]
-  (.emit @socket-ref const/key-evt
-         #js {:event const/key-up-evt
-              :key key}))
+  (emit-key-event const/key-up-evt key))
 
 (defn on-vertical-movement-change
   [value]
