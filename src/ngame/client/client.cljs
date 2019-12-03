@@ -1,8 +1,13 @@
 (ns ngame.client.client
+  (:use [ngame.client.input :only [setup-input]])
   (:use [ngame.client.movement :only [setup-movement]])
+  (:require [ngame.common.constants :as const])
   (:require [clojure.string :as string])
   (:require ["phaser" :as phaser])
   (:require ["socket.io-client" :as socket]))
+
+(defonce socket-ref
+  (volatile! nil))
 
 (defn main-scene [game]
   (nth game.scene.scenes 0))
@@ -10,6 +15,25 @@
 (defn log
   [message]
   (js/console.log (str "[client] " message)))
+
+(defn movement-event
+  [value]
+  #js {:axis value
+       :date (js/Date.now)})
+
+(defn emit-key-event
+  [event key]
+  (.emit @socket-ref const/key-evt
+         #js {:event event
+              :key (name key)}))
+
+(defn on-key-down
+  [key]
+  (emit-key-event const/key-down-evt key))
+
+(defn on-key-up
+  [key]
+  (emit-key-event const/key-up-evt key))
 
 (defn on-vertical-movement-change
   [value]
@@ -55,7 +79,10 @@
 
 (defn create-fn []
   (setup-socket)
-  (setup-movement (main-scene js/game) on-vertical-movement-change on-horizontal-movement-change))
+  (setup-input (main-scene js/game) on-key-down on-key-up)
+  (setup-movement (main-scene js/game)
+                  on-vertical-movement-change
+                  on-horizontal-movement-change))
 
 (defn update-fn [])
 
