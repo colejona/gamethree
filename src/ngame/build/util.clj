@@ -14,22 +14,28 @@
         (fs/mkdirs to)
         (dorun
          (fs/walk (fn [root dirs files]
-                 (doseq [dir dirs]
-                   (when-not (fs/directory? dir)
-                     (-> root (fs/file dir) dest fs/mkdirs)))
-                 (doseq [f files]
-                   (fs/copy+ (fs/file root f) (dest (fs/file root f)))))
-               from))
+                    (doseq [dir dirs]
+                      (when-not (fs/directory? dir)
+                        (-> root (fs/file dir) dest fs/mkdirs)))
+                    (doseq [f files]
+                      (fs/copy+ (fs/file root f) (dest (fs/file root f)))))
+                  from))
         to))))
 
 (defn copy-client-static-files
   {:shadow.build/stage :compile-prepare}
-  [build-state & args]
+  [build-state]
   (copy-dir "src/ngame/client/static" "public")
   build-state)
 
 (defn copy-server-static-files
   {:shadow.build/stage :compile-prepare}
-  [build-state & args]
+  [build-state]
   (copy-dir "src/ngame/server/authoritative_server/static" "target/authoritative_server")
+  build-state)
+
+(defn copy-common-static-files
+  {:shadow.build/stage :compile-prepare}
+  [build-state target-dir]
+  (copy-dir "src/ngame/common/static" target-dir)
   build-state)

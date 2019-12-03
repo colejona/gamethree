@@ -1,6 +1,22 @@
 <html>
-    <head>
-        <script src="./main.js"></script>
-    </head>
-    <body></body>
+
+<head>
+    <script>
+        window.fixMissingUrlFunctions = function (datauri) {
+            window.URL.createObjectURL = function (blob) {
+                if (blob) {
+                    return datauri.format(blob.type, blob[Object.getOwnPropertySymbols(blob)[0]]._buffer).content;
+                }
+            };
+
+            window.URL.revokeObjectURL = function (objectURL) {
+                // Do nothing at the moment
+            };
+        };
+    </script>
+    <script src="./main.js"></script>
+</head>
+
+<body></body>
+
 </html>

@@ -1,6 +1,7 @@
 (ns ngame.client.client
   (:use [ngame.client.input :only [setup-input]])
   (:use [ngame.client.movement :only [setup-movement]])
+  (:use [ngame.common.phaser-util :only [main-scene add-image load-image]])
   (:require [ngame.common.constants :as const])
   (:require [clojure.string :as string])
   (:require ["phaser" :as phaser])
@@ -8,9 +9,6 @@
 
 (defonce socket-ref
   (volatile! nil))
-
-(defn main-scene [game]
-  (nth game.scene.scenes 0))
 
 (defn log
   [message]
@@ -55,8 +53,8 @@
   [io-socket io]
   (.on io "player-established"
        (fn [x y]
-         (log "Player established on server.")
-         (-> (main-scene js/game) .-add (.image x y "player"))
+         (log (str "Player established on server at " x "," y))
+         (add-image js/game x y "player")
          (.emit io "client-player-ready" "Hello World"))))
 
 (defn create-socket-listeners
@@ -65,9 +63,6 @@
 
 (defn preload-fn []
   (-> (main-scene js/game) .-load (.image "player" "assets/red_square.png")))
-
-(defonce socket-ref
-  (volatile! nil))
 
 (defn setup-socket
   []

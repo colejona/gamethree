@@ -1,23 +1,24 @@
 (ns ngame.server.authoritative-server.game
-  (:require ["phaser" :as phaser]))
+  (:use [ngame.common.phaser-util :only [main-scene add-image load-image]])
+  (:require ["phaser" :as phaser])
+  (:require ["datauri" :as datauri]))
 
-(defn main-scene [game]
-  (nth game.scene.scenes 0))
-
-(defn preload-fn [])
+(defn preload-fn []
+  (load-image js/game "player" "assets/red_square.png"))
 
 (defn create-fn [])
 
 (defn update-fn [])
 
 (defn log
-  [message]
-  (js/console.log (str "[authoritative-server] " message)))
+  [& args]
+  (js/console.log (apply str (concat "[authoritative-server] " args))))
 
 (declare start)
 
 (defn init []
   (log "init")
+  (js/fixMissingUrlFunctions (datauri.))
   (start))
 
 (defn start []
@@ -33,3 +34,11 @@
 (defn stop []
   (log "stop")
   (.destroy js/game true))
+
+(defn ^:export add-player
+  [id player-established-callback]
+  (let [x 300
+        y 240]
+    (log (str "Adding player `" id "` at " x "," y))
+    (add-image js/game x y "player")
+    (player-established-callback x y)))
