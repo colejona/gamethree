@@ -1,4 +1,5 @@
 (ns ngame.server.server
+  (:require [ngame.common.constants :as const])
   (:require ["express" :as express])
   (:require ["http" :as http])
   (:require ["serve-static" :as serve-static])
@@ -27,7 +28,10 @@
         on-player-established #(.emit client-socket "player-established" %1 %2)]
     (log (str "Adding player: " id))
     (dom-add-player-fn id on-player-established)
-    (.on client-socket "client-player-ready" #(log (str "Client says " %)))))
+    (.on client-socket "client-player-ready" #(log (str "Client says " %)))
+    (.on client-socket const/key-evt
+         (fn [event]
+           (log (str "Key event: " (js/JSON.stringify event)))))))
 
 (defn start-accepting-connections
   [io dom]
