@@ -2,6 +2,7 @@
 
 (defn set-handlers
   [keyboard letter key key-down-handler key-up-handler]
+  (.addKey keyboard letter)
   (.on keyboard (str "keydown-" letter) #(key-down-handler key))
   (.on keyboard (str "keyup-" letter) #(key-up-handler key)))
 
