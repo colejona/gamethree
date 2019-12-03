@@ -16,9 +16,6 @@
   [message]
   (js/console.log (str "[client] " message)))
 
-(defn preload-fn []
-  (-> (main-scene js/game) .-load (.image "player" "assets/red_square.png")))
-
 (defn movement-event
   [value]
   #js {:axis value
@@ -46,14 +43,6 @@
   [value]
   (log (str "Horizontal movement changed: " value)))
 
-(defn create-fn []
-  (setup-input (main-scene js/game) on-key-down on-key-up)
-  (setup-movement (main-scene js/game)
-                  on-vertical-movement-change
-                  on-horizontal-movement-change))
-
-(defn update-fn [])
-
 (defn get-socket-address []
   (str (if (= js/window.location.protocol "https:") "wss" "ws")
        (str "://" js/window.location.hostname ":")
@@ -74,6 +63,29 @@
   [io]
   (.once io "connect" #(listen-for-player-established % io)))
 
+(defn preload-fn []
+  (-> (main-scene js/game) .-load (.image "player" "assets/red_square.png")))
+
+(defonce socket-ref
+  (volatile! nil))
+
+(defn setup-socket
+  []
+  (if (nil? @socket-ref)
+    (let [io (socket (get-socket-address) (clj->js {:autoConnect false}))]
+      (vreset! socket-ref io)
+      (create-socket-listeners io)))
+  (.open @socket-ref))
+
+(defn create-fn []
+  (setup-socket)
+  (setup-input (main-scene js/game) on-key-down on-key-up)
+  (setup-movement (main-scene js/game)
+                  on-vertical-movement-change
+                  on-horizontal-movement-change))
+
+(defn update-fn [])
+
 (defn start []
   (log "start")
 
@@ -82,14 +94,7 @@
                                            :height 480
                                            :scene {:preload preload-fn
                                                    :create create-fn
-                                                   :update update-fn}})))
-
-  (if (nil? @socket-ref)
-    (let [io (socket (get-socket-address) (clj->js {:autoConnect false}))]
-      (vreset! socket-ref io)
-      (create-socket-listeners io)))
-
-  (.open @socket-ref))
+                                                   :update update-fn}}))))
 
 (defn init []
   (log "init")
