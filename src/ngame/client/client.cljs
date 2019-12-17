@@ -85,8 +85,8 @@
   (log "start")
 
   (set! js/game (js/Phaser.Game. (clj->js {:type js/Phaser.AUTO
-                                           :width 600
-                                           :height 480
+                                           :width const/width
+                                           :height const/height
                                            :scene {:preload preload-fn
                                                    :create create-fn
                                                    :update update-fn}}))))
