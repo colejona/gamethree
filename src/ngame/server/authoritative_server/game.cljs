@@ -39,7 +39,7 @@
 
 (defn random-position []
   {:x (* (rand-int (/ const/width const/spacing)) const/spacing)
-   :y (* (rand-int (/ const/width const/spacing)) const/spacing)})
+   :y (* (rand-int (/ const/height const/spacing)) const/spacing)})
 
 (defn position-used? [pos]
   (contains? used-positions pos))
