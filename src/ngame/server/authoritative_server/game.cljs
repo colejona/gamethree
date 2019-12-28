@@ -4,7 +4,7 @@
   (:require ["phaser" :as phaser])
   (:require ["datauri" :as datauri]))
 
-(defonce used-positions #{})
+(defonce player-positions {})
 (defonce max-position-count
   (* (/ const/width const/spacing)
      (/ const/height const/spacing)))
@@ -42,7 +42,7 @@
    :y (* (rand-int (/ const/height const/spacing)) const/spacing)})
 
 (defn position-used? [pos]
-  (contains? used-positions pos))
+  (contains? (set (vals player-positions)) pos))
 
 (defn new-position []
   (let [pos (random-position)]
@@ -50,11 +50,11 @@
       (new-position)
       pos)))
 
-(defn place-player! []
-  (if (>= (count used-positions) max-position-count)
-    (set! used-positions #{}))
-  (let [pos (new-position)]
-    (set! used-positions (conj used-positions pos))
+(defn place-player! [id]
+  (let [pos (if (>= (count player-positions) max-position-count)
+              (random-position)
+              (new-position))]
+    (set! player-positions (conj player-positions {id pos}))
     pos))
 
 (defn stop []
@@ -64,7 +64,7 @@
 (defn ^:export add-player
   [id player-established-callback]
   (let [ {x :x, y :y}
-         (place-player!) ]
+         (place-player! id) ]
     (log (str "Adding player `" id "` at " x "," y))
     (add-image js/game x y "player")
     (player-established-callback x y)))
