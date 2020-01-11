@@ -67,8 +67,7 @@
   [io]
   (.once io "connect" (fn [socket]
     (listen-for-player-established socket io)
-    (listen-for-game-update socket io)
-    )))
+    (listen-for-game-update socket io))))
 
 (defn preload-fn []
   (-> (main-scene js/game) .-load (.image "player" "assets/red_square.png")))
