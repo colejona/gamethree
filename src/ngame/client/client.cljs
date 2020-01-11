@@ -57,9 +57,18 @@
          (add-image js/game x y "player")
          (.emit io "client-player-ready" "Hello World"))))
 
+(defn listen-for-game-update
+  [io-socket io]
+  (.on io const/game-update-evt
+    (fn [game-state]
+      (log (str "Game state update: " (js/JSON.stringify game-state))))))
+
 (defn create-socket-listeners
   [io]
-  (.once io "connect" #(listen-for-player-established % io)))
+  (.once io "connect" (fn [socket]
+    (listen-for-player-established socket io)
+    (listen-for-game-update socket io)
+    )))
 
 (defn preload-fn []
   (-> (main-scene js/game) .-load (.image "player" "assets/red_square.png")))

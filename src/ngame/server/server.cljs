@@ -33,9 +33,19 @@
          (fn [event]
            (log (str "Key event: " (js/JSON.stringify event)))))))
 
+(defn schedule-game-broadcast
+  [client-socket dom]
+  (let [dom-get-game-state dom.window.ngame.server.authoritative_server.game.get-game-state]
+    (js/setInterval
+      (fn []
+        (.emit client-socket const/game-update-evt (dom-get-game-state)))
+      const/game-update-interval)))
+
 (defn start-accepting-connections
   [io dom]
-  (.on io "connect" #(set-up-new-player % dom)))
+  (.on io "connect" (fn [socket]
+    (set-up-new-player socket dom)
+    (schedule-game-broadcast socket dom))))
 
 (defn -main []
   (log "starting server")
