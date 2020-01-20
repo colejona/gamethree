@@ -1,5 +1,5 @@
 (ns ngame.client.client
-  (:use [ngame.client.input :only [setup-input]])
+  (:use [ngame.client.keyboard-input :only [setup-input]])
   (:use [ngame.client.movement :only [setup-movement]])
   (:use [ngame.common.phaser-util :only [main-scene add-image load-image]])
   (:require [ngame.common.constants :as const])
@@ -72,12 +72,18 @@
       (create-socket-listeners io)))
   (.open @socket-ref))
 
-(defn create-fn []
-  (setup-socket)
-  (setup-input (main-scene js/game) on-key-down on-key-up)
-  (setup-movement (main-scene js/game)
+(defn setup-key-event-emitters []
+  (setup-input (main-scene js/game) on-key-down on-key-up))
+
+(defn setup-local-movement []
+  (setup-movement (partial setup-input (main-scene js/game))
                   on-vertical-movement-change
                   on-horizontal-movement-change))
+
+(defn create-fn []
+  (setup-socket)
+  (setup-key-event-emitters)
+  (setup-local-movement))
 
 (defn update-fn [])
 

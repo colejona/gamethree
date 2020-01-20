@@ -1,4 +1,4 @@
-(ns ngame.client.input)
+(ns ngame.client.keyboard-input)
 
 (defn set-handlers
   [keyboard letter key key-down-handler key-up-handler]
