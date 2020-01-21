@@ -1,9 +1,8 @@
 (ns ngame.client.movement
-  (:use [ngame.client.input :only [setup-input]])
   (:use [ngame.common.constants :only [movement-speed]]))
 
 (defn setup-movement
-  [scene vertical-movement-handler horizontal-movement-handler]
+  [input-setup-fn vertical-movement-handler horizontal-movement-handler]
   (let [up-movement (atom 0)
         down-movement (atom 0)
         left-movement (atom 0)
@@ -48,4 +47,4 @@
         :s_key (reset! down-movement 0)
         :d_key (reset! right-movement 0)))
 
-    (setup-input scene handle-key-down handle-key-up)))
+    (input-setup-fn handle-key-down handle-key-up)))
