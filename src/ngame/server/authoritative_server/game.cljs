@@ -68,3 +68,7 @@
     (log (str "Adding player `" id "` at " x "," y))
     (add-image js/game x y "player")
     (player-established-callback x y)))
+
+(defn get-game-state []
+  (clj->js { :timestamp (js/Date.now)
+             :player-positions player-positions }))

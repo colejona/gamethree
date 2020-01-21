@@ -7,3 +7,5 @@
 (defonce key-evt "key-event")
 (defonce key-up-evt "key-up")
 (defonce key-down-evt "key-down")
+(defonce game-update-evt "game-update")
+(defonce game-update-interval 100)
