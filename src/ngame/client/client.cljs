@@ -10,6 +10,8 @@
 (defonce socket-ref
   (volatile! nil))
 
+(defonce player-map {})
+
 (defn log
   [message]
   (js/console.log (str "[client] " message)))
@@ -57,11 +59,25 @@
          (add-image js/game x y "player")
          (.emit io "client-player-ready" "Hello World"))))
 
+(defn update-player-map!
+  [game-state]
+  (log player-map)
+  (let [player-positions (get (js->clj game-state) "player-positions")]
+    (reduce
+      (fn [acc el]
+        (let [player-id (key el)
+              player-pos (nth el 1)]
+          (if (contains? player-map player-id)
+            (log (str "already seen this player " player-id))
+            ((set! player-map (conj player-map {player-id player-pos}))
+             (log (str "new player "  player-id))))))
+      (seq player-positions))))
+
 (defn listen-for-game-update
   [io-socket io]
   (.on io const/game-update-evt
     (fn [game-state]
-      (log (str "Game state update: " (js/JSON.stringify game-state))))))
+      (update-player-map! game-state))))
 
 (defn create-socket-listeners
   [io]
