@@ -30,6 +30,7 @@
 (defn start []
   (log "start")
   (set! js/game (js/Phaser.Game. (clj->js {:type js/Phaser.HEADLESS
+                                           :physics {:default "arcade"}
                                            :width const/width
                                            :height const/height
                                            :scene {:preload preload-fn

@@ -7,6 +7,10 @@
   [game x y id]
   (-> (main-scene game) .-add (.image x y id)))
 
+(defn add-sprite
+  [game x y id]
+  (-> (main-scene game) .-physics .-add (.sprite x y id)))
+
 (defn load-image
   [game id path]
   (-> (main-scene game) .-load (.image id path)))

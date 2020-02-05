@@ -1,7 +1,7 @@
 (ns ngame.client.client
   (:use [ngame.client.keyboard-input :only [setup-input]])
   (:use [ngame.client.movement :only [setup-movement]])
-  (:use [ngame.common.phaser-util :only [main-scene add-image load-image]])
+  (:use [ngame.common.phaser-util :only [main-scene add-sprite load-image]])
   (:require [ngame.common.constants :as const])
   (:require [clojure.string :as string])
   (:require ["phaser" :as phaser])
@@ -9,6 +9,8 @@
 
 (defonce socket-ref
   (volatile! nil))
+
+(defonce player-map {})
 
 (defn log
   [message]
@@ -53,15 +55,47 @@
   [io-socket io]
   (.on io "player-established"
        (fn [x y]
-         (log (str "Player established on server at " x "," y))
-         (add-image js/game x y "player")
+         (add-sprite js/game x y "player")
          (.emit io "client-player-ready" "Hello World"))))
+
+(defn add-player-to-map!
+  [id pos game-object]
+  (set! player-map (conj player-map {id {:position pos
+                                         :game-object game-object}})))
+
+(defn add-new-player!
+  [id player-pos]
+  (let [x (get player-pos "x")
+        y (get player-pos "y")]
+    (let [game-object (add-sprite js/game x y "player")]
+      (add-player-to-map! id player-pos game-object))))
+
+(defn update-player-pos!
+  [player-id player-pos]
+  (let [game-object (get (get player-map player-id) :game-object)
+        x (get player-pos "x")
+        y (get player-pos "y")]
+    (set! (.-x game-object) x)
+    (set! (.-y game-object) y)
+    (add-player-to-map! player-id player-pos game-object)))
+
+(defn update-player-map!
+  [game-state]
+  (let [player-positions (get (js->clj game-state) "player-positions")]
+    (reduce
+      (fn [acc el]
+        (let [player-id (key el)
+              player-pos (nth el 1)]
+          (if (contains? player-map player-id)
+            (update-player-pos! player-id player-pos)
+            (add-new-player! player-id player-pos))))
+      (seq player-positions))))
 
 (defn listen-for-game-update
   [io-socket io]
   (.on io const/game-update-evt
     (fn [game-state]
-      (log (str "Game state update: " (js/JSON.stringify game-state))))))
+      (update-player-map! game-state))))
 
 (defn create-socket-listeners
   [io]
@@ -99,6 +133,7 @@
   (log "start")
 
   (set! js/game (js/Phaser.Game. (clj->js {:type js/Phaser.AUTO
+                                           :physics {:default "arcade"}
                                            :width const/width
                                            :height const/height
                                            :scene {:preload preload-fn
