@@ -33,6 +33,12 @@
          (fn [event]
            (log (str "Key event: " (js/JSON.stringify event)))))))
 
+(defn remove-player
+  [client-socket dom]
+  (let [dom-remove-player-fn dom.window.ngame.server.authoritative_server.game.remove-player
+        id (.-id client-socket)]
+    (dom-remove-player-fn id)))
+
 (defn schedule-game-broadcast
   [client-socket dom]
   (let [dom-get-game-state dom.window.ngame.server.authoritative_server.game.get-game-state]
@@ -45,7 +51,8 @@
   [io dom]
   (.on io "connect" (fn [socket]
     (set-up-new-player socket dom)
-    (schedule-game-broadcast socket dom))))
+    (schedule-game-broadcast socket dom)
+    (.on socket "disconnect" (fn [] (remove-player socket dom))))))
 
 (defn -main []
   (log "starting server")

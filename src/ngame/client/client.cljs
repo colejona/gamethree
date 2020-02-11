@@ -4,6 +4,7 @@
   (:use [ngame.common.phaser-util :only [main-scene add-sprite load-image]])
   (:require [ngame.common.constants :as const])
   (:require [clojure.string :as string])
+  (:require [clojure.data :as data])
   (:require ["phaser" :as phaser])
   (:require ["socket.io-client" :as socket]))
 
@@ -68,6 +69,8 @@
   (let [x (get player-pos "x")
         y (get player-pos "y")]
     (let [game-object (add-sprite js/game x y "player")]
+      ; TODO: remove log
+      (log (str "adding player " id))
       (add-player-to-map! id player-pos game-object))))
 
 (defn update-player-pos!
@@ -79,6 +82,16 @@
     (set! (.-y game-object) y)
     (add-player-to-map! player-id player-pos game-object)))
 
+(defn clean-up-player!
+  [player-id]
+  (let [player-to-clean-up (get player-map player-id)
+        game-object (get player-to-clean-up :game-object)]
+        ; TODO: remove log
+        (log (str "removing player " player-id game-object))
+        (if (not (nil? game-object))
+          (.destroy game-object))
+        (set! player-map (dissoc player-map player-id))))
+
 (defn update-player-map!
   [game-state]
   (let [player-positions (get (js->clj game-state) "player-positions")]
@@ -89,7 +102,13 @@
           (if (contains? player-map player-id)
             (update-player-pos! player-id player-pos)
             (add-new-player! player-id player-pos))))
-      (seq player-positions))))
+      (seq player-positions))
+      (let [player-diffs (data/diff (set (keys player-positions)) (set (keys player-map)))
+            removed-players (nth player-diffs 1)]
+        (reduce 
+          (fn [acc player]
+            (clean-up-player! player))
+          (seq removed-players)))))
 
 (defn listen-for-game-update
   [io-socket io]
