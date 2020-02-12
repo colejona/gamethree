@@ -86,8 +86,6 @@
   [player-id]
   (let [player-to-clean-up (get player-map player-id)
         game-object (get player-to-clean-up :game-object)]
-        ; TODO: remove log
-        (log (str "removing player " player-id game-object))
         (if (not (nil? game-object))
           (.destroy game-object))
         (set! player-map (dissoc player-map player-id))))
@@ -95,20 +93,15 @@
 (defn update-player-map!
   [game-state]
   (let [player-positions (get (js->clj game-state) "player-positions")]
-    (reduce
-      (fn [acc el]
+    (doseq [el (seq player-positions)]
         (let [player-id (key el)
               player-pos (nth el 1)]
           (if (contains? player-map player-id)
             (update-player-pos! player-id player-pos)
             (add-new-player! player-id player-pos))))
-      (seq player-positions))
-      (let [player-diffs (data/diff (set (keys player-positions)) (set (keys player-map)))
-            removed-players (nth player-diffs 1)]
-        (reduce 
-          (fn [acc player]
-            (clean-up-player! player))
-          (seq removed-players)))))
+    (let [player-diffs (data/diff (set (keys player-positions)) (set (keys player-map)))
+          removed-players (nth player-diffs 1)]
+      (doseq [player (seq removed-players)] (clean-up-player! player)))))
 
 (defn listen-for-game-update
   [io-socket io]
