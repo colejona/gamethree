@@ -69,8 +69,6 @@
   (let [x (get player-pos "x")
         y (get player-pos "y")]
     (let [game-object (add-sprite js/game x y "player")]
-      ; TODO: remove log
-      (log (str "adding player " id))
       (add-player-to-map! id player-pos game-object))))
 
 (defn update-player-pos!
