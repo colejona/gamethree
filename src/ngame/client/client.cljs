@@ -82,10 +82,9 @@
 
 (defn clean-up-player!
   [player-id]
-  (let [player-to-clean-up (get player-map player-id)
-        game-object (get player-to-clean-up :game-object)]
-    (if-let [removed-player game-object]
-      (.destroy removed-player))
+  (let [player-to-clean-up (get player-map player-id)]
+    (if-let [game-object (get player-to-clean-up :game-object)]
+      (.destroy game-object))
     (set! player-map (dissoc player-map player-id))))
 
 (defn update-player-map!
